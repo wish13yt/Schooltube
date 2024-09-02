@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schooltube</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Schooltube</h1>
+            <p>Upload and view videos</p>
+        </header>
+
+        <form id="uploadForm">
+            <input type="text" id="videoName" placeholder="Video Name" required>
+            <input type="file" id="videoFile" required>
+            <button type="submit">Upload Video</button>
+        </form>
+
+        <div id="videoList"></div>
+    </div>
+
+    <footer>
+        &copy; 2024 Schooltube. All rights reserved.
+    </footer>
+
+    <script src="firebase-app.js"></script>
+    <script src="firebase-storage.js"></script>
+    <script src="firebase-database.js"></script>
+    <script src="script.js"></script> <!-- Link to your JS file -->
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

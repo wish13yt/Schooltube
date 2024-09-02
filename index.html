@@ -13,11 +13,55 @@
             <p>Your image, right here.</p>
         </header>
 
-        <form id="uploadForm">
-            <input type="text" id="videoName" placeholder="Image" required>
-            <input type="file" id="videoFile" required>
-            <button type="submit">Upload Video</button>
-        </form>
+<!-- This pulls Uppy from our CDN -->
+<!-- For smaller self-hosted bundles, install Uppy and plugins manually: -->
+<!-- npm i --save @uppy/core @uppy/dashboard @uppy/remote-sources @uppy/transloadit ... -->
+<link
+  href="https://releases.transloadit.com/uppy/v3.10.0/uppy.min.css"
+  rel="stylesheet"
+/>
+<button id="browse">Select Files</button>
+<script type="module">
+  import {
+    Uppy,
+    Dashboard,
+    ImageEditor,
+    RemoteSources,
+    Transloadit,
+  } from 'https://releases.transloadit.com/uppy/v3.10.0/uppy.min.mjs'
+  const uppy = new Uppy()
+    .use(Transloadit, {
+      waitForEncoding: true,
+      alwaysRunAssembly: true,
+      assemblyOptions: {
+        params: {
+          template_id: 'f173103ef62b4715a1dabc0e2fdd59a1',
+          // To avoid tampering, use Signature Authentication:
+          // https://transloadit.com/docs/topics/signature-authentication/
+          auth: {
+            key: 'a066d5ac77984fd4918a3ea0801bbafc',
+          },
+        },
+      },
+    })
+    .use(Dashboard, { trigger: '#browse' })
+    .use(ImageEditor, { target: Dashboard })
+    .use(RemoteSources, {
+      companionUrl: 'https://api2.transloadit.com/companion',
+    })
+    .on('complete', ({ transloadit }) => {
+      // Due to `waitForEncoding:true` this is fired after encoding is done.
+      // Alternatively, set `waitForEncoding` to `false` and provide a `notify_url`
+      console.log(transloadit) // Array of Assembly Statuses
+      transloadit.forEach((assembly) => {
+        console.log(assembly.results) // Array of all encoding results
+      })
+    })
+    .on('error', (error) => {
+      console.error(error)
+    })
+</script>
+
 
     <footer>
       2024 myImage. Licensed under the GPL-3.0 license.
